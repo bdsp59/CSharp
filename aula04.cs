@@ -439,12 +439,38 @@ Forma padrão de uma classe:
         }
     }
 
-Tipos de modificadores de classe que temos:
+Tipos de modificadores de classe(Define a visibilidade da classe):
 -public: Pública, sem restrição de visualização. Qualquer outra classe, método, programa pode acessar esse tipo.
 -abstract: Classe-base para outras classes, não pode instanciar objetos dessa classe. Não podemos criar objetos
 a partir de uma classe abstract.
--sealed: Classe não pode ser herdada.(Funciona como o private do Java)
+-sealed: Classe não pode ser herdada.
 -static: Classe não permite a instanciação de objetos e seus membros devem ser static. Podemos acessar as pro-
 priedades e os membros dessas classes.
 
+Tipos de especificadores de classes(Onde um membro da classe pode ser acessado):
+-public: Sem restrição de acesso;
+-private: Só podem ser acessados pela própria classe
+-protected: Podem ser acessados na própria classe e nas classes derivadas(filhas)
+-abstract: Os métodos não tem implementações, somente os cabeçalhos. Usadas em classes pais para definir os 
+métodos que devem existir, mas somente serão implementados em métodos nas classes filhos.
+-sealed: O método não pode ser redefinido. Não pode ter overwrite(sobreposição), não permite polimorfismo.
+-virtual: O método pode ser redefinido em uma classe derivada
+-static: O método pode ser chamado mesmo sem a instanciação de um objeto
 */
+
+using System;
+
+public class Jogador{
+    public int energia = 100;
+    public bool vivo = true;
+}
+
+public class Aula28{
+    stativ void Main(){
+        Jogador j1 = new Jogador();
+        Jogador j2 = new Jogador();
+        Jogador j3 = new Jogador();
+
+        Console.WriteLine("Energia do jogador 1: {0}", j1.energia);
+    }
+}
