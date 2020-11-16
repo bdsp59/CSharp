@@ -456,7 +456,6 @@ métodos que devem existir, mas somente serão implementados em métodos nas cla
 -sealed: O método não pode ser redefinido. Não pode ter overwrite(sobreposição), não permite polimorfismo.
 -virtual: O método pode ser redefinido em uma classe derivada
 -static: O método pode ser chamado mesmo sem a instanciação de um objeto
-*/
 
 using System;
 
@@ -466,11 +465,209 @@ public class Jogador{
 }
 
 public class Aula28{
-    stativ void Main(){
+    static void Main(){
         Jogador j1 = new Jogador();
         Jogador j2 = new Jogador();
         Jogador j3 = new Jogador();
 
+        j1.energia = 50;->Alteramos o valor da energia do objeto jogador 1
         Console.WriteLine("Energia do jogador 1: {0}", j1.energia);
+        Console.WriteLine("Energia do jogador 2: {0}", j2.energia);->A energia que está ligada a jogador 2 independe 
+        do que acontece com a dos outros objetos jogador
     }
 }
+*/
+
+/*
+Métodos Construtores
+Tem como objetivo inicializar as variáveis contidas dentro do classe para reservar o espaço de memória necessário 
+para a utilização desse método ao longo do programa. Mesmo que não seja iniciado pelo programa, o próprio c# cria
+um construtor default responsável por separar a memória. Para criar um método construtor devemos apenas criar 
+um método com o mesmo nome da classe. E por padrão não declaramos valores ao iniciar a classe, mas sim ao chamar
+o método construtor.
+Declaramos os métodos construtores dentro das classes para que as classes quando forem inicializadas, as suas
+variavéis já sejam atribuídas. Podemos ter paramêtros que devem ser atribuidos na hora de instanciar as classes.
+
+using System;
+
+public class Jogador{
+    public int energia;
+    public bool vivo;
+    public string nome;
+
+    public Jogador(string nome){
+        energia = 100;
+        vivo = true;
+        this.nome = nome;
+    }
+}
+
+public class Aula28{
+    static void Main(){
+        Jogador j1 = new Jogador("Bruno");
+        Jogador j2 = new Jogador("Lucas");
+
+        Console.WriteLine("Nome/Energia do jogador 1: {0} {1}", j1.nome, j1.energia);
+        Console.WriteLine("Nome/Energia do jogador 2: {0} {1}", j2.nome, j2.energia);
+    }
+}
+
+Método destrutor
+É um método que é executado quando a classe for destruído, ele é chamado antes do objeto ser destruído pelo 
+garbage collector. Quando o programa ver que não precisa mais do objeto e for descartar o objeto é quando o 
+método destrutor vai ser chamado. Para criar um método destrutor temos apenas que criar um método com um nome 
+da classe, mas colocando um til na frente do nome.
+
+using System;
+
+public class Jogador{
+    public int energia;
+    public bool vivo;
+    public string nome;
+
+    public Jogador(string nome){
+        energia = 100;
+        vivo = true;
+        this.nome = nome;
+    }
+
+    ~Jogador(){
+        Console.WriteLine("Jogador {0} foi destruído", this.nome);
+    }
+}
+
+public class Aula28{
+    static void Main(){
+        Jogador j1 = new Jogador("Bruno");
+        Jogador j2 = new Jogador("Lucas");
+
+        Console.WriteLine("Nome/Energia do jogador 1: {0} {1}", j1.nome, j1.energia);
+        Console.WriteLine("Nome/Energia do jogador 2: {0} {1}", j2.nome, j2.energia);
+    }
+}
+*/
+
+/*
+Sobrecarga de construtores
+É quando criamos mais construtores de uma mesma classe, mas com diferentes quantidade e tipos de parametros para
+que possam sobreescrever o outro construtor. Permitindo assim diferentes métodos de implementar uma mesma classe.
+
+using System;
+
+public class Jogador{
+    public int energia;
+    public bool vivo;
+    public string nome;
+
+    public Jogador(){
+        energia = 100;
+        vivo = true;
+        nome = "Jogador";
+    }
+    public Jogador(string nome){
+        energia = 100;
+        vivo = true;
+        this.nome = nome;
+    }
+    public Jogador(string nome, int energia){
+        this.nome = nome;
+        this.energia = energia;
+        vivo = true;
+    }
+    public Jogador(string nome, int energia, bool vivo){
+        this.nome = nome;
+        this.energia = energia;
+        this.vivo = vivo;
+    }
+
+    public void info(){
+        Console.WriteLine("Nome do jogador: {0}", nome);
+        Console.WriteLine("Energia do jogador: {0}", energia);
+        Console.WriteLine("Estado jogador: {0}", vivo);
+        Console.WriteLine("");
+    }
+
+    ~Jogador(){
+        Console.WriteLine("Jogador {0} foi destruído", this.nome);
+    }
+}
+
+public class Aula30{
+    static void Main(){
+        Jogador j1 = new Jogador();
+        Jogador j2 = new Jogador("Lucas");
+        Jogador j3 = new Jogador("Bruno", 100);
+        Jogador j4 = new Jogador("Theo", 100, true);
+        Jogador j5 = new Jogador("Matheus", 0, false);
+
+        j1.info();
+        j2.info();
+        j3.info();
+        j4.info();
+        j5.info();
+    }
+}
+*/
+
+/*
+Classe Static
+Não permitem a instanciação de objetos da classe que for static. Como não podemos declarar objetos, não temos 
+métodos construtores, a classe não permite. Ele tem essa característica, pois ele tem um espaço fixo na memória.
+Como ele já cria um espaço fixo na memória não há necessicidade de se instaciar o objeto para separar o espaço
+da memória. Todos os membros de uma classe static tem que ser do tipo static(propriedades e métodos).
+Uma classe não static pode ter uma classe static.
+using System;
+
+static public class Jogador{
+    static public int energia;
+    static public bool vivo;
+    static public string nome;
+
+    static public void iniciar(string n){
+        energia = 100;
+        vivo = true;
+        nome = n;
+    }
+
+    static public void info(){
+        Console.WriteLine("Nome do jogador: {0}", nome);
+        Console.WriteLine("Energia do jogador: {0}", energia);
+        Console.WriteLine("Estado jogador: {0}", vivo);
+        Console.WriteLine("");
+    }
+}
+
+class Inimigo{
+    static public bool alerta;
+    public string nome;
+
+    public Inimigo(String n){
+        alerta = false;
+        nome = n;
+    }
+    public void info(){
+        Console.WriteLine(nome);
+        Console.WriteLine(alerta);
+        Console.WriteLine("-----------------------------------");
+    }
+}
+
+public class Aula30{
+    static void Main(){
+
+        Jogador.iniciar("Bruno");
+        Jogador.info();
+
+        Inimigo i1 = new Inimigo("Goblin");
+        Inimigo i2 = new Inimigo("Esqueleto");
+        Inimigo i3 = new Inimigo("Gosma");
+
+        Inimigo.alerta = true;//Como o alerta é do tipo static quando trocamos o valor nessa linha troca o valor
+        de todos os objetos inimigos, já que eles ocupam o mesmo espaço de memória.
+
+        i1.info();
+        i2.info();
+        i3.info();
+    }
+}
+*/
