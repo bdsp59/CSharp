@@ -683,8 +683,6 @@ Herança
 filha tem as mesmas características da classe pai só que, dependendo do modificador de acesso, podem alterar o 
 valor das variáveis que vem da classe pai e permite que sejam criados novas variáveis para atender as caracterís-
 ticas especifícas da classe filho.
-*/
-
 using System;
 
 class Veiculo{
@@ -722,5 +720,310 @@ class Aula34{
     static void Main(){
         Carro c1 = new Carro("C4", "Vermelho");
         Console.WriteLine("Nome do carro: {0}\nCor do carro: {1}\nRodas: {2}\nVelocidade Máxima: {3}\nEstá ligado: {4}", c1.nome, c1.cor, c1.rodas,c1.velMax,c1.getLigado());
+    }
+}
+*/
+
+/*
+Construtor da classe base
+Quando a classe base tem um construtor e temos que utiliza-lo na classe filho temos que ao fazer o construtor da classe filho temos que colocar : e "base", assim dizemos que é uma 
+referência ao construtor da classe pai e por onde podemos passar valores a qualquer paramêtro que o construtor da classe pai tenha.
+
+using System;
+
+class Veiculo{
+    public int velMax;
+    private int rodas;
+    private bool ligado;
+
+    public Veiculo(int rodas){
+        this.rodas = rodas;
+    }
+
+    public void ligar(){
+        ligado = true;
+    }
+    public void desligar(){
+        ligado = false;
+    }
+    public string getLigado(){
+        //Podemos reduzir o código desse método usando o operador ternário, que seria colocar a expressão de if como uma linha única que vai realizar todo o teste.
+        //A estrutura do operador é: (teste?valor_verdadeiro:valor_falso)
+        return (ligado?"Sim":"Não");
+    }
+    public int getRodas(){
+        return rodas;
+    }
+}
+
+class Carro:Veiculo{
+    public String nome, cor;
+
+    public Carro(String nome, String cor):base(4){       
+        ligar();
+        velMax = 120;
+        this.nome = nome;
+        this.cor = cor;
+    }
+}
+
+class Aula35{
+    static void Main(){
+        Carro c1 = new Carro("C4", "Vermelho");
+        Console.WriteLine("Nome do carro: {0}\nCor do carro: {1}\nRodas: {2}\nVelocidade Máxima: {3}\nEstá ligado: {4}", c1.nome, c1.cor, c1.getRodas(),c1.velMax,c1.getLigado());
+    }
+}
+
+*/
+
+/*
+Cadeia de herança
+É quando começamos a ter classes filho de uma classe que já é uma classe filho, ou seja, geramos uma classe neto. Quando isso ocorre podemos dizer que a classe avô é a base de tudo e
+podemos usar e manipular(desde que seja autorizado pelo modificador de acesso) na classe neto qualquer variável da classe pai e da classe avô. 
+Isso permite que agrupemos dados comuns em classes pais ou avôs e ir gerando mais classes filhos e netos com dados mais específicos, fazendo assim com que o programa tenha mais classes,
+mas que podem cada vez ser mais especializadas e permitindo que somente se adicione uma nova classe e não que seja necessário a alteração de todo o código.
+using System;
+
+class Veiculo{
+    public int velMax;
+    private int rodas;
+    private bool ligado;
+
+    public Veiculo(int rodas){
+        this.rodas = rodas;
+    }
+
+    public void ligar(){
+        ligado = true;
+    }
+    public void desligar(){
+        ligado = false;
+    }
+    public string getLigado(){
+        //Podemos reduzir o código desse método usando o operador ternário, que seria colocar a expressão de if como uma linha única que vai realizar todo o teste.
+        //A estrutura do operador é: (teste?valor_verdadeiro:valor_falso)
+        return (ligado?"Sim":"Não");
+    }
+    public void setRodas(int rodas){
+        if(rodas<0){
+            this.rodas = 0;
+        }else if(rodas>40){
+            this.rodas = 40;
+        }else{
+            this.rodas = rodas;
+        }
+    }
+    public int getRodas(){
+        return rodas;
+    }
+}
+
+class Carro:Veiculo{
+    public String nome, cor;
+
+    public Carro(String nome, String cor):base(4){       
+        ligar();
+        velMax = 120;
+        this.nome = nome;
+        this.cor = cor;
+    }
+}
+
+class CarroCombate:Carro{
+    public int municao;
+    public CarroCombate():base("Monster", "Verde"){
+        municao = 100;
+        setRodas(6);
+    }
+}
+
+class Aula35{
+    static void Main(){
+        Carro c1 = new Carro("C4", "Vermelho");
+        Console.WriteLine("Nome do carro: {0}\nCor do carro: {1}\nRodas: {2}\nVelocidade Máxima: {3}\nEstá ligado: {4}", c1.nome, c1.cor, c1.getRodas(),c1.velMax,c1.getLigado());
+        CarroCombate cc1 = new CarroCombate();
+        Console.WriteLine("");
+        Console.WriteLine("Nome do carro: {0}\nCor do carro: {1}\nRodas: {2}\nVelocidade Máxima: {3}\nEstá ligado: {4}\nMunição:{5}", cc1.nome, cc1.cor, cc1.getRodas(),cc1.velMax,cc1.getLigado(), cc1.municao);
+    }
+}
+*/
+
+/*
+Membros Protected
+Os membros declarados como protected indica que apenas a própria classe e as classes filhas(derivadas) que podem ter métodos que acessam essas variáveis, sendo assim somente as classes
+que herdam outras podem alterar o valor sem a necessidade que a classe original tenha um método public para fazer essas alterações.
+
+using System;
+
+class Veiculo{
+    public int velAtual;
+    private int velMax;
+    protected bool ligado;
+
+    public Veiculo(int velMax){
+        velAtual = 0;
+        this.velMax = velMax;
+        ligado = false;
+    }
+
+    public bool getLigado(){
+        return ligado;
+    }
+    public int getVelMax(){
+        return velMax;
+    }
+}
+
+class Carro:Veiculo{
+    public string nome;
+
+    public Carro(string nome, int vm):base(vm){
+        this.nome = nome;
+        ligado = true;
+    }
+
+}
+
+class Aula36{
+    static void Main(){
+        Carro c1 = new Carro("Vectra", 120);
+        Console.WriteLine("Nome: {0} \nVelocidade Máxima: {1} \nLigado: {2}", c1.nome,c1.getVelMax(),c1.getLigado());
+    }
+}
+*/
+
+/*
+Ordem de execução dos métodos construtores em herança
+A ordem de execução sempre será da classe base até a classe derivada que estamos inicializando. 
+
+using System;
+
+class Base{
+    public Base(){
+        Console.WriteLine("Construtor da classe Base");
+    }
+}
+
+class Derivada1:Base{
+    public Derivada1(){
+        Console.WriteLine("Construtor da Derivada 1");
+    }
+}
+
+class Derivada2:Derivada1{
+    public Derivada2(){
+        Console.WriteLine("Construtor da Derivada 2");
+    }
+}
+
+class Aula37{
+    static void Main(){
+        Derivada2 teste = new Derivada2();
+    }
+}
+*/
+
+/*
+Métodos virtuais
+São métodos que possuem o mesmo nome, mas em classes diferentes. Quando temos uma classe derivada que tem um método com o mesmo nome, mas que tem uma execução diferente da classe base
+(podendo ser executar algo a mais ou alterar algo que o método fazia na classe base), então chamamos esse método de virtual. Basicamente, sobrescrevemos o método na classe derivada.
+Para podermos usar esses métodos virtuais temos que indicar que o método na classe base é virtual e que na classe derivada ele deve sobrescrever o método da classe base(usando o 
+override). Como podemos sobreescrever um método em mais de uma classe derivada da classe base, temos que ter uma maneira de conseguir imprimir apenas o que queremos daquela classe deri
+vada, sem que seja sobrescrita por outra. Temos duas maneiras de fazer isso:
+1-Criando um objeto para cada classe e chamando eles separadamente
+static void Main(){
+        Derivada1 derivada1 = new Derivada1();
+        Derivada2 derivada2 = new Derivada2();
+        derivada1.Info();
+        derivada2.Info();
+    }
+2-Fazendo com que o objeto da classe base funcione como uma referência, ou seja, vamos fazer com que esse objeto receba o objeto da classe certa.
+static void Main(){
+        Base Ref;//Temos que usar Ref com letra maiúscula obrigatoriamente
+        Derivada1 derivada1 = new Derivada1();
+        Derivada2 derivada2 = new Derivada2();
+
+        Ref = derivada2;
+        Ref.Info();
+    }
+
+using System;
+
+class Base{
+    public Base(){
+        Console.WriteLine("Construtor da classe Base");
+    }
+
+    virtual public void Info(){}//Como ele é um método que vai ser sobreescrito não precisamos implementa-lo
+}
+
+class Derivada1:Base{
+    public Derivada1(){
+        Console.WriteLine("Construtor da Derivada 1");
+    }
+    override public void Info(){
+        Console.WriteLine("Derivada 1");
+    }
+}
+
+class Derivada2:Derivada1{
+    public Derivada2(){
+        Console.WriteLine("Construtor da Derivada 2");
+    }
+    override public void Info(){
+        Console.WriteLine("Derivada 2");
+    }
+}
+
+class Aula37{
+    static void Main(){
+        Base Ref;//Temos que usar Ref com letra maiúscula obrigatoriamente
+        Derivada1 derivada1 = new Derivada1();
+        Derivada2 derivada2 = new Derivada2();
+
+        Ref = derivada2;
+        Ref.Info();
+    }
+}
+*/
+
+/*
+Classes e métodos abstratos
+Tanto a classe abstrata como o método abstrato servem como referência para outras classes, ou seja, servem como base para outras classes. Os métodos abstratos não são implementados, 
+eles apenas servem como protótipos(referência), como são para que sejam implementados nas classes que herdam as classes abstratas. Dentro da classe abstrata podemos ter métodos abstratos e não 
+abstratos, sendo assim os métodos não abstratos terão que ser implementados. Classes abstratas não podem ser instanciadas.
+*/
+
+using System;
+
+abstract class Veiculo{
+    protected int velMax, velAtual;
+    protected bool ligado;
+
+    public Veiculo(){
+        ligado = false;
+        velAtual = 0;
+    }
+
+    public void setLigado(bool ligado){//Como não é um método abstract temos que implementa-lo na classe base
+        this.ligado = ligado;
+    }
+
+    abstract public void aceleracao(int mult);//Como é um método abstract temos que implementa-lo na classe derivada
+
+}
+
+class Carro:Veiculo{
+    public Carro(){
+        velMax = 120;
+    }
+    override public void aceleracao(int mult){
+        velAtual+=10*mult;
+    }
+}
+
+class Aula39{
+    static void Main(){
+
     }
 }
