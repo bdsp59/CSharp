@@ -671,3 +671,56 @@ public class Aula30{
     }
 }
 */
+
+/*
+Operador this
+Serve para referenciar uma variável global dentro de um método que possua uma variável local com o mesmo nome.
+*/
+
+/*
+Herança
+É quando temos classes que derivam, ou seja, classes que herdam as características de uma outra classe. A classe
+filha tem as mesmas características da classe pai só que, dependendo do modificador de acesso, podem alterar o 
+valor das variáveis que vem da classe pai e permite que sejam criados novas variáveis para atender as caracterís-
+ticas especifícas da classe filho.
+*/
+
+using System;
+
+class Veiculo{
+    public int velMax, rodas;
+    private bool ligado;
+
+    public void ligar(){
+        ligado = true;
+    }
+    public void desligar(){
+        ligado = false;
+    }
+    public string getLigado(){
+        if(ligado){
+            return "Sim";
+        }else{
+            return "Não";
+        }
+    }
+}
+
+class Carro:Veiculo{
+    public String nome, cor;
+
+    public Carro(String nome, String cor){
+        desligar();
+        rodas = 4;
+        velMax = 120;
+        this.nome = nome;
+        this.cor = cor;
+    }
+}
+
+class Aula34{
+    static void Main(){
+        Carro c1 = new Carro("C4", "Vermelho");
+        Console.WriteLine("Nome do carro: {0}\nCor do carro: {1}\nRodas: {2}\nVelocidade Máxima: {3}\nEstá ligado: {4}", c1.nome, c1.cor, c1.rodas,c1.velMax,c1.getLigado());
+    }
+}
