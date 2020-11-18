@@ -992,7 +992,6 @@ Classes e métodos abstratos
 Tanto a classe abstrata como o método abstrato servem como referência para outras classes, ou seja, servem como base para outras classes. Os métodos abstratos não são implementados, 
 eles apenas servem como protótipos(referência), como são para que sejam implementados nas classes que herdam as classes abstratas. Dentro da classe abstrata podemos ter métodos abstratos e não 
 abstratos, sendo assim os métodos não abstratos terão que ser implementados. Classes abstratas não podem ser instanciadas.
-*/
 
 using System;
 
@@ -1009,6 +1008,9 @@ abstract class Veiculo{
         this.ligado = ligado;
     }
 
+    public int getVelAtual(){
+        return velAtual;
+    }
     abstract public void aceleracao(int mult);//Como é um método abstract temos que implementa-lo na classe derivada
 
 }
@@ -1018,12 +1020,17 @@ class Carro:Veiculo{
         velMax = 120;
     }
     override public void aceleracao(int mult){
-        velAtual+=10*mult;
+        velAtual += 10*mult;
     }
 }
 
 class Aula39{
     static void Main(){
-
+        Carro c1 = new Carro();
+        c1.aceleracao(1);
+        c1.aceleracao(1);
+        c1.aceleracao(-1);
+        Console.WriteLine(c1.getVelAtual());
     }
 }
+*/
